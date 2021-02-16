@@ -151,7 +151,6 @@ const createLines = () => {
         }
         position.x += position.vx
         position.x = position.x % (maxLimit)
-        if (position.x == 0) { textPosition = [] }
         position.y += $canvas.height / 5
     }
     count = 0
@@ -206,14 +205,15 @@ const loop = () => {
     generateGrad()
     window.requestAnimationFrame(loop)
     context.drawImage(image, 0, 0, windowWidth, windowHeight)
+    textPosition = []
     createLines()
 
-    for (let i = 0; i < textPosition.length; i++) {
-        const element = textPosition[i];
-        if (element != undefined) {
-            context.fillStyle = 'rgba(0,0,250, 0.5)'
-            context.fillRect(element.x, element.y, element.w, element.h)
-        }
-    }
+    // for (let i = 0; i < textPosition.length; i++) {
+    //     const element = textPosition[i];
+    //     if (element != undefined) {
+    //         context.fillStyle = 'rgba(0,0,250, 0.5)'
+    //         context.fillRect(element.x, element.y, element.w, element.h)
+    //     }
+    // }
 }
 loop()
