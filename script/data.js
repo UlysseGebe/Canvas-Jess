@@ -3,7 +3,7 @@ const data = {
         adj :[
             {
                 name : 'soleil',
-                sound : new Audio('sounds/bot.mp3'),
+                sound : new Audio('sounds/dnce_cake_by_the_ocean.mp3'),
                 position : 0
             },
             {

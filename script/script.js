@@ -23,9 +23,6 @@ for (const key in data) {
     }
 }
 
-// $canvas.sounds.snow.currentTime = 0
-// $canvas.sounds.snow.play()
-
 let windowWidth = $canvas.width
 let windowHeight = $canvas.height
 
@@ -179,8 +176,14 @@ $canvas.addEventListener('click', () => {
         const element = textPosition[i];
         if (element != undefined) {
             if (cursor.x >= element.x && cursor.y >= element.y && cursor.x <= element.x + element.w && cursor.y <= element.y + element.h) {
-                element.music.currentTime = 0
-                element.music.play()
+                if ($canvas.sound != undefined) {
+                    if (!$canvas.sound.paused) {
+                        $canvas.sound.pause()
+                    }
+                }
+                $canvas.sound = element.music
+                $canvas.sound.currentTime = 0
+                $canvas.sound.play()
             }
         }
     }
