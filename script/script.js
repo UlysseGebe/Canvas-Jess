@@ -68,7 +68,8 @@ const clickEvent = (coord, music) => {
     })
 }
 let x = 0
-const generateText = (word, line, gap, music) => {
+const generateText = (element, line) => {
+    let word = element.name.toUpperCase(), gap = element.position
     context.font = "60px Montserrat";
     context.strokeStyle = "white";
     context.lineWidth = 2.5;
@@ -83,8 +84,8 @@ const generateText = (word, line, gap, music) => {
                 h: 60, // Font size in px
                 x: x - context.measureText(word).width / 2,
                 y: position.y - 50,
-                music: music,
-                name: word
+                music: element.sound,
+                img: element.bar
             }
             count++
         }
@@ -96,8 +97,8 @@ const generateText = (word, line, gap, music) => {
                 h: 60, // Font size in px
                 x: x - context.measureText(word).width / 2,
                 y: position.y - 50,
-                music: music,
-                name: word
+                music: element.sound,
+                img: element.bar
             }
             count++
         }
@@ -110,8 +111,8 @@ const generateText = (word, line, gap, music) => {
                 h: 60, // Font size in px
                 x: x - context.measureText(word).width / 2,
                 y: position.y - 50,
-                music: music,
-                name: word
+                music: element.sound,
+                img: element.bar
             }
             count++
         }
@@ -123,8 +124,8 @@ const generateText = (word, line, gap, music) => {
                 h: 60, // Font size in px
                 x: x - context.measureText(word).width / 2,
                 y: position.y - 50,
-                music: music,
-                name: word
+                music: element.sound,
+                img: element.bar
             }
             count++
         }
@@ -135,7 +136,7 @@ const createLines = () => {
     for (let j = 0; j < 4; j++) {
         for (let i = 0; i < $canvas.saison.length; i++) {
             const element = $canvas.saison[i];
-            generateText(element.name.toUpperCase(), j, element.position, element.sound)
+            generateText(element, j)
 
         }
         position.x += position.vx
@@ -156,20 +157,18 @@ const generateGrad = () => {
     context.fillRect(0, 0, windowWidth, windowHeight) // On dessine un carré
 }
 
-const loop = () => {
-    context.clearRect(0, 0, windowWidth, windowHeight); // effacer le canvas
-    generateGrad()
-    window.requestAnimationFrame(loop)
-    createLines()
-    for (let i = 0; i < textPosition.length; i++) {
-        const element = textPosition[i];
-        if (element != undefined) {
-            context.fillStyle = 'rgba(0,0,250, 0.5)'
-            context.fillRect(element.x, element.y, element.w, element.h)
-        }
+const generateMenu = (src) => {
+    let oldImage = document.querySelector('.soundBar')
+    if (oldImage) {
+        oldImage.outerHTML = ''
+    }
+    if (src) {
+        let image = document.createElement('img')
+        image.classList.add('soundBar')
+        image.src = src
+        document.querySelector('body').appendChild(image)
     }
 }
-loop()
 
 $canvas.addEventListener('click', () => {
     for (let i = 0; i < textPosition.length; i++) {
@@ -184,7 +183,23 @@ $canvas.addEventListener('click', () => {
                 $canvas.sound = element.music
                 $canvas.sound.currentTime = 0
                 $canvas.sound.play()
+                generateMenu(element.img)
             }
         }
     }
 })
+
+const loop = () => {
+    context.clearRect(0, 0, windowWidth, windowHeight); // effacer le canvas
+    generateGrad()
+    window.requestAnimationFrame(loop)
+    createLines()
+    // for (let i = 0; i < textPosition.length; i++) {
+    //     const element = textPosition[i];
+    //     if (element != undefined) {
+    //         context.fillStyle = 'rgba(0,0,250, 0.5)'
+    //         context.fillRect(element.x, element.y, element.w, element.h)
+    //     }
+    // }
+}
+loop()

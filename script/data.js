@@ -4,7 +4,8 @@ const data = {
             {
                 name : 'soleil',
                 sound : new Audio('sounds/dnce_cake_by_the_ocean.mp3'),
-                position : 0
+                position : 0,
+                bar : 'img/MENU_ETE.svg'
             },
             {
                 name : 'chaud',
