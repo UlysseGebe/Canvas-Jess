@@ -23,6 +23,11 @@ for (const key in data) {
     }
 }
 
+let image = new Image();
+image.addEventListener('load', () => {
+    context.drawImage(image, 0, 0, windowWidth, windowHeight)
+})
+
 let windowWidth = $canvas.width
 let windowHeight = $canvas.height
 
@@ -85,7 +90,8 @@ const generateText = (element, line) => {
                 x: x - context.measureText(word).width / 2,
                 y: position.y - 50,
                 music: element.sound,
-                img: element.bar
+                img: element.bar,
+                bg: element.bg
             }
             count++
         }
@@ -98,11 +104,13 @@ const generateText = (element, line) => {
                 x: x - context.measureText(word).width / 2,
                 y: position.y - 50,
                 music: element.sound,
-                img: element.bar
+                img: element.bar,
+                bg: element.bg
             }
             count++
         }
-    } else {
+    }
+    if (line % 2 != 0) {
         if (-position.x - ecart + gap * 2 >= 0) {
             x = (-position.x + gap) - ecart
             context.strokeText(word, (-position.x + gap) - ecart, position.y);
@@ -112,7 +120,8 @@ const generateText = (element, line) => {
                 x: x - context.measureText(word).width / 2,
                 y: position.y - 50,
                 music: element.sound,
-                img: element.bar
+                img: element.bar,
+                bg: element.bg
             }
             count++
         }
@@ -125,7 +134,8 @@ const generateText = (element, line) => {
                 x: x - context.measureText(word).width / 2,
                 y: position.y - 50,
                 music: element.sound,
-                img: element.bar
+                img: element.bar,
+                bg: element.bg
             }
             count++
         }
@@ -141,6 +151,7 @@ const createLines = () => {
         }
         position.x += position.vx
         position.x = position.x % (maxLimit)
+        if (position.x == 0) { textPosition = [] }
         position.y += $canvas.height / 5
     }
     count = 0
@@ -184,6 +195,7 @@ $canvas.addEventListener('click', () => {
                 $canvas.sound.currentTime = 0
                 $canvas.sound.play()
                 generateMenu(element.img)
+                image.src = element.bg ? element.bg : '';
             }
         }
     }
@@ -193,13 +205,15 @@ const loop = () => {
     context.clearRect(0, 0, windowWidth, windowHeight); // effacer le canvas
     generateGrad()
     window.requestAnimationFrame(loop)
+    context.drawImage(image, 0, 0, windowWidth, windowHeight)
     createLines()
-    // for (let i = 0; i < textPosition.length; i++) {
-    //     const element = textPosition[i];
-    //     if (element != undefined) {
-    //         context.fillStyle = 'rgba(0,0,250, 0.5)'
-    //         context.fillRect(element.x, element.y, element.w, element.h)
-    //     }
-    // }
+
+    for (let i = 0; i < textPosition.length; i++) {
+        const element = textPosition[i];
+        if (element != undefined) {
+            context.fillStyle = 'rgba(0,0,250, 0.5)'
+            context.fillRect(element.x, element.y, element.w, element.h)
+        }
+    }
 }
 loop()
